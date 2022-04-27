@@ -1,0 +1,40 @@
+---
+- name: Test playbook
+  hosts: testservers
+  vars:
+    mode: "list"
+    iteration:
+      - 1
+      - 2 
+      - 3
+      - 4
+      - 5
+  tasks:
+    - block:
+      - name: Print all files
+        command: "cat ~/ansible-test/file{{item}}"
+        with_items: "{{iteration}}"
+        register: output
+
+      - debug:
+          msg: "{{item.stdout}}"
+        with_items: "{{output.results}}"
+      when: '"print" in mode'
+
+    - block:
+      - name: Create directory
+        file:
+          path: ~/ansible-test
+          state: directory
+        
+      - name: Create number of files
+        copy:
+          dest: "~/ansible-test/file{{item}}"
+          content: |
+            Test file {{item}}
+        with_items: "{{iteration}}"
+      when: '"create" in mode'
+
+    - name: Delete all files
+      command: "rm -r ansible-test"
+      when: '"delete" in mode'
