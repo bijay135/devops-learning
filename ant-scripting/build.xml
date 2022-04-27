@@ -1,0 +1,73 @@
+<project name="HelloWorld" basedir="." default="main">
+    <!-- Properties -->
+    <property name="condition"   value=""/>
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="${build.dir}/jar"/>
+    <property name="main-class"  value="oata.HelloWorld"/>
+
+    <!-- Task defs -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="/Users/bijaya.shah/Applications/ant-packages/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="/Users/bijaya.shah/Applications/ant-packages/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
+
+    <!-- Conditions -->
+    <if>
+        <equals arg1="${condition}" arg2="true"/>
+        <then>
+            <echo message="If condition met"/>
+        </then>
+        <elseif>
+            <equals arg1="${condition}" arg2="false"/>
+            <then>
+                <echo message="Else if condition met"/>
+            </then>
+        </elseif>
+        <else>
+            <echo message="No conditions met"/>
+        </else>
+    </if>
+
+    <!-- Loops -->
+    <echo message="The first five letters of the alphabet are:"/>
+    <for list="a,b,c,d,e" param="letter">
+        <sequential>
+            <echo>Letter @{letter}</echo>
+        </sequential>
+    </for>
+
+    <!-- Targets -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+
+    <target name="clean-build" depends="clean,jar"/>
+
+    <target name="main" depends="clean,run"/>
+</project>
