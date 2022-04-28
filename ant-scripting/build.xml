@@ -38,6 +38,8 @@
         </jar>
     </target>
 
+    <target name="clean-build" depends="clean,jar"/>
+
     <target name="run" depends="jar">
         <antcall target="script">
             <param name="message" value="Run target started"/>
@@ -49,8 +51,6 @@
             <param name="message" value="Clean target complete"/>
         </antcall>
     </target>
-
-    <target name="clean-build" depends="clean,jar"/>
 
     <!-- Conditions -->
     <target name="condition">
@@ -69,7 +69,6 @@
                 <echo message="No conditions met"/>
             </else>
         </if>
-
     </target>
    
     <!-- Loops -->
