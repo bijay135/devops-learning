@@ -19,31 +19,6 @@
         </classpath>
     </taskdef>
 
-    <!-- Conditions -->
-    <if>
-        <equals arg1="${condition}" arg2="true"/>
-        <then>
-            <echo message="If condition met"/>
-        </then>
-        <elseif>
-            <equals arg1="${condition}" arg2="false"/>
-            <then>
-                <echo message="Else if condition met"/>
-            </then>
-        </elseif>
-        <else>
-            <echo message="No conditions met"/>
-        </else>
-    </if>
-
-    <!-- Loops -->
-    <echo message="The first five letters of the alphabet are:"/>
-    <for list="a,b,c,d,e" param="letter">
-        <sequential>
-            <echo>Letter @{letter}</echo>
-        </sequential>
-    </for>
-
     <!-- Targets -->
     <target name="clean">
         <delete dir="${build.dir}"/>
@@ -64,10 +39,56 @@
     </target>
 
     <target name="run" depends="jar">
+        <antcall target="script">
+            <param name="message" value="Run target started"/>
+        </antcall>
         <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+        <antcall target="condition"/>
+        <antcall target="loop"/>
+        <antcall target="script">
+            <param name="message" value="Clean target complete"/>
+        </antcall>
     </target>
 
     <target name="clean-build" depends="clean,jar"/>
+
+    <!-- Conditions -->
+    <target name="condition">
+         <if>
+            <equals arg1="${condition}" arg2="true"/>
+            <then>
+                <echo message="If condition met"/>
+            </then>
+            <elseif>
+                <equals arg1="${condition}" arg2="false"/>
+                <then>
+                    <echo message="Else if condition met"/>
+                </then>
+            </elseif>
+            <else>
+                <echo message="No conditions met"/>
+            </else>
+        </if>
+
+    </target>
+   
+    <!-- Loops -->
+    <target name="loop">
+        <echo message="The first five letters of the alphabet are:"/>
+        <for list="a,b,c,d,e" param="letter">
+            <sequential>
+                <echo>Letter @{letter}</echo>
+            </sequential>
+        </for>
+    </target>
+
+    <!-- Scripts -->
+    <target name="script">
+        <exec executable="/bin/bash">
+            <arg value="${basedir}/message.sh"/>
+            <arg value="${message}"/>
+        </exec>
+    </target>
 
     <target name="main" depends="clean,run"/>
 </project>
