@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-m", "--mode", dest = "mode", help="Control mode start, stop, status")
 args = parser.parse_args()
 if args.mode != "status":
-    instance = input("Enter instance number(space seperated for multiple), all:  ")
+    instance = input("Enter instance number(space seperated for multiple), all: ")
 
 # Variables
 instance_pool = [1, 2, 3]
