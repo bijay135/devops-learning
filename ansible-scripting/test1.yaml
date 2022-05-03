@@ -1,6 +1,6 @@
 ---
-- name: Test playbook
-  hosts: testservers
+- name: Test playbook 1
+  hosts: linuxservers
   vars:
     mode: "list"
     iteration:

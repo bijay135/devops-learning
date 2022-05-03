@@ -1,0 +1,12 @@
+---
+- name: Test playbook 2
+  hosts: winservers
+  tasks:
+    - name: Execute commands
+      win_shell: |
+        hostname
+        Get-Date
+      register: output
+
+    - debug: 
+        msg: "{{output.stdout}}"
