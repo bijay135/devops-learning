@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+    app:
+        build: .
+        image: tomcat_sample:8.5.50-jdk8
+        container_name: tomcat-sample
+        ports:
+          - 8080:8080
