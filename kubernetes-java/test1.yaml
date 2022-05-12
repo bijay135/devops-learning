@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat-sample
+  template:
+    metadata:
+      labels:
+        app: tomcat-sample
+    spec:
+      containers:
+      - name: tomcat-sample
+        image: tomcat_sample:8.5.50-jdk8
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-service
+  namespace: default
+spec:
+  selector:
+    app: tomcat-sample
+  type: NodePort
+  ports:
+  - nodePort: 30001 
+    port: 8080
+    targetPort: 8080
